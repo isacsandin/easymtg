@@ -1,28 +1,75 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
 public class Card {
 	
+	@DatabaseField(generatedId=true)
+    private int id;
+	
+	@DatabaseField
 	private Vector<String> names;
+	
+	@DatabaseField
 	private String manaCost;
+	
+	@DatabaseField
 	private int cmc;
+	
+	@DatabaseField
 	private Vector<String> colors;
+	
+	@DatabaseField
 	private String type;
+	
+	@DatabaseField
 	private Vector<String> supertypes;
+	
+	@DatabaseField
 	private Vector<String> types;
+	
+	@DatabaseField
 	private Vector<String> subtypes;
+	
+	@DatabaseField
 	private String rarity;
+	
+	@DatabaseField
 	private String text;
+	
+	@DatabaseField
 	private String flavor;
+	
+	@DatabaseField
 	private String artist;
+	
+	@DatabaseField
 	private String power;
+	
+	@DatabaseField
 	private String toughness;
+	
+	@DatabaseField
 	private String loyalty;
+	
+	@DatabaseField
 	private Vector<Integer> variations;
+	
+	@DatabaseField
 	private String imageName;
-	private Vector<Rule> rulings;
+	
+	@DatabaseField
 	private Vector<String> printings;
+	
+    @DatabaseField(foreign=true,foreignAutoRefresh=true)
+	private ForeignCollection<Rule> rulings;
 	
 	
 	public Card(){
@@ -165,19 +212,23 @@ public class Card {
 		this.colors.add(color);
 	}
 
-	public Vector<Rule> getRulings() {
-		return rulings;
-	}
-
-	public void setRulings(Rule rule) {
-		this.rulings.add(rule);
-	}
-
 	public Vector<String> getPrintings() {
 		return printings;
 	}
 
 	public void setPrintings(String print) {
 		this.printings.add(print);
+	}
+	
+	public List<Rule> getRulings() {
+		ArrayList<Rule> rulingsl = new ArrayList<Rule>();
+		for(Rule r:rulings){
+			rulingsl.add(r);
+		}
+		return rulingsl;
+	}
+
+	public void setRulings(ForeignCollection<Rule> rulings) {
+		this.rulings = rulings;
 	}
 }

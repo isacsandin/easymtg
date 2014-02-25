@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.ui;
+
+import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.R.id;
+import com.magicplayers.easymtg.R.layout;
 
 import android.app.ActionBar;
 import android.content.Intent;

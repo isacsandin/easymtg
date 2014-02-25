@@ -1,4 +1,4 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

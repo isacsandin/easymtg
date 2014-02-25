@@ -1,4 +1,4 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class jSONReader {
+import com.magicplayers.easymtg.model.Card;
+import com.magicplayers.easymtg.model.Edition;
+import com.magicplayers.easymtg.model.Rule;
+
+public class JSONReader {
 
 	private JSONObject jObjEdition;
 	private JSONObject jObjCard;
@@ -18,7 +22,7 @@ public class jSONReader {
 	private Edition edition = new Edition();
 	private Card card = new Card();
 	
-	public jSONReader(JSONTokener token){
+	public JSONReader(JSONTokener token){
 		
 		try {
 			this.jObjEdition = new JSONObject(token);
@@ -101,8 +105,9 @@ public class jSONReader {
 						e.printStackTrace();
 					}
 					Rule rule = new Rule(date, subJobj.getString("text"));
-					this.card.setRulings(rule);
 				}
+				//this.card.setRulings(rule);
+
 				
 				this.card.setImageName(jObjCard.getString("imageName"));
 				
@@ -111,8 +116,9 @@ public class jSONReader {
 					this.card.setPrintings(jArr.getString(i));
 				}
 				
-				this.edition.setCards(this.card);
 			}
+			//this.edition.setCards(this.card);
+
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

@@ -1,9 +1,20 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.model;
 
 import java.util.Date;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
 public class Rule {
+	
+	@DatabaseField(generatedId=true)
+    private int id;
+	
+	@DatabaseField
 	private Date date;
+	
+	@DatabaseField
 	private String text;
 	
 	public Rule(Date date, String text) {

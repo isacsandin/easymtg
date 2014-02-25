@@ -1,6 +1,10 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.ui;
 
 import java.util.ArrayList;
+
+import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.R.id;
+import com.magicplayers.easymtg.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

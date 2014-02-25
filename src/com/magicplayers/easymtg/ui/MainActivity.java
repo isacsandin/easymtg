@@ -1,4 +1,10 @@
-package com.magicplayers.easymtg;
+package com.magicplayers.easymtg.ui;
+
+import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.R.id;
+import com.magicplayers.easymtg.R.layout;
+import com.magicplayers.easymtg.R.menu;
+import com.magicplayers.easymtg.R.string;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
