@@ -1,4 +1,4 @@
-package com.magicplayers.easymtg.ui;
+package com.magicplayers.easymtg.ui.lists;
 
 public class ItemListView
 {

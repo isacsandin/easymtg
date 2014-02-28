@@ -1,4 +1,4 @@
-package com.magicplayers.easymtg.ui;
+package com.magicplayers.easymtg.ui.lists;
 
 import java.util.ArrayList;
 

@@ -1,21 +1,17 @@
-package com.magicplayers.easymtg.ui;
+package com.magicplayers.easymtg.ui.lists;
 
 import java.util.ArrayList;
-
-import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.R.drawable;
-import com.magicplayers.easymtg.R.id;
-import com.magicplayers.easymtg.R.layout;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.magicplayers.easymtg.R;
 
 public class ListActivity extends Activity  implements OnItemClickListener{
 
