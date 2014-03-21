@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
                             .setTabListener(this));
         }
         try {
-        	String url = "/com/magicplayers/easymtg/resources/AllCards-x.json";
+        	String url = "/com/magicplayers/easymtg/resources/AllCards-x.1.json";
         	InputStreamReader reader = new InputStreamReader(MainActivity.class.getResourceAsStream(url));
         	Gson gson = new Gson();
         	List<CardGson> response = gson.fromJson(reader, List.class);
