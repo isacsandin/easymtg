@@ -2,10 +2,6 @@ package com.magicplayers.easymtg.ui.lists;
 
 import java.util.ArrayList;
 
-import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.R.id;
-import com.magicplayers.easymtg.R.layout;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.magicplayers.easymtg.R;
 
 public class AdapterListView extends BaseAdapter
 {

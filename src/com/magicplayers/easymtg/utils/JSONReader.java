@@ -3,17 +3,23 @@ package com.magicplayers.easymtg.utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.util.Log;
 
 import com.magicplayers.easymtg.model.Card;
 import com.magicplayers.easymtg.model.Edition;
@@ -21,7 +27,7 @@ import com.magicplayers.easymtg.model.Rule;
 
 public class JSONReader {
 
-	public static void importJSON(String token) {
+	public static void importJSONv2(String token) {
 		JSONObject jObjEdition;
 		JSONObject jObjCard;
 
@@ -130,17 +136,27 @@ public class JSONReader {
 		}
 
 	}
+	
+	public static void importJSON(InputStreamReader reader) throws JSONException {
+		JSONTokener tokenizer = new JSONTokener(reader.toString());
+	    JSONObject jObjEdition = new JSONObject(tokenizer);
+		JSONArray cards;
+		JSONObject set, card;
+		Iterator<?> keys = jObjEdition.keys();
+		
 
-	public static void main(String[] args) throws FileNotFoundException {
-		File file = new File(JSONReader.class.getResource("com/magicplayers/easymtg/resources/Allsets-x.json").getFile());
-		StringBuilder fileContents = new StringBuilder((int) file.length());
-		Scanner scanner = new Scanner(file);
-		String lineSeparator = System.getProperty("line.separator");
-		while (scanner.hasNextLine()) {
-			fileContents.append(scanner.nextLine() + lineSeparator);
-		}
-		//importJSON(fileContents.toString());
-		System.out.println(fileContents.toString());
-		scanner.close();
+        while( keys.hasNext() ){
+            String key = (String)keys.next();
+            if( jObjEdition.get(key) instanceof JSONObject ){
+            	System.out.println(key);
+            	set = jObjEdition.getJSONObject(key);
+            	//System.out.println(jObjEdition.get(key));
+            	cards = set.getJSONArray("cards");
+            	for (int c = 0; c < cards.length(); c++) {
+    				card = cards.getJSONObject(c);
+            		Log.d(JSONReader.class.getName(), card.getString("name"));
+            	}
+            }
+        }
 	}
 }
