@@ -1,9 +1,12 @@
 package com.magicplayers.easymtg.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -94,7 +97,7 @@ public class CardGson {
 	
     @DatabaseField(foreign=true,foreignAutoRefresh=true)
     @SerializedName("rulings")
-	private ForeignCollection<Rule> rulings;
+	private Collection<Rule> rulings;
 	
 	
 	public CardGson(){
@@ -261,7 +264,13 @@ public class CardGson {
 		return rulingsl;
 	}
 
-	public void setRulings(ForeignCollection<Rule> rulings) {
+	public void setRulings(Collection<Rule> rulings) {
 		this.rulings = rulings;
+	}
+
+	@Override
+	public String toString() {
+    	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		return gson.toJson(this);
 	}
 }

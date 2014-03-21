@@ -1,12 +1,6 @@
 package com.magicplayers.easymtg.ui;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -21,11 +15,12 @@ import android.util.Log;
 import android.view.Menu;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.model.CardContainer;
 import com.magicplayers.easymtg.model.CardGson;
 import com.magicplayers.easymtg.ui.tabs.DummySectionFragment;
 import com.magicplayers.easymtg.ui.tabs.ListViewFragment;
-import com.magicplayers.easymtg.utils.JSONReader;
 
 public class MainActivity extends FragmentActivity implements TabListener {
 
@@ -59,12 +54,14 @@ public class MainActivity extends FragmentActivity implements TabListener {
                             .setTabListener(this));
         }
         try {
-        	String url = "/com/magicplayers/easymtg/resources/AllCards-x.1.json";
+        	String url = "/com/magicplayers/easymtg/resources/AllCards-x.0.json";
         	InputStreamReader reader = new InputStreamReader(MainActivity.class.getResourceAsStream(url));
-        	Gson gson = new Gson();
-        	List<CardGson> response = gson.fromJson(reader, List.class);
+        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        	CardContainer response = gson.fromJson(reader, CardContainer.class);
+//        	CardGson response = gson.fromJson(reader, CardGson.class);
         	
-        	Log.d("DEBUGFODAO", response.get(0).getName());
+        	//Log.d("DEBUGFODAO", response.get(0).getName());
+        	Log.w(" [BLABLA] ",response.cards.get(0).toString());
         	
 
 			//JSONReader.importJSON(reader);
