@@ -23,7 +23,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private Dao<Card, Integer> cardDao = null;
     private Dao<Rule, Integer> ruleDao = null;
-    private RuntimeExceptionDao<Card, Integer> simpleRuntimeDao = null;
 
 
 
@@ -36,6 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Card.class);
             TableUtils.createTable(connectionSource, Rule.class);
+            Log.i(DatabaseHelper.class.getName(), "Funcionou.");
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -69,6 +69,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	{
 		Dao<Card, Integer> daoCard = getCardDao();
 		List<Card> listCard = daoCard.queryForAll();
+
 		daoCard.delete(listCard);
 		
 		Dao<Rule, Integer> daoRule = getRuleDao();
@@ -94,19 +95,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return cardDao;
     }
     
-     public RuntimeExceptionDao<Card, Integer> getSimpleDataDao() {
-		if (simpleRuntimeDao == null) {
-			simpleRuntimeDao = getRuntimeExceptionDao(Card.class);
-		}
-		return simpleRuntimeDao;
-	}
-    
-   
+  
 	public void addCard(Card card) throws java.sql.SQLException
 	{
-//		RuntimeExceptionDao<Card, Integer> dao = getSimpleDataDao();
+//		getCardDao().delete(card);
 		getCardDao().create(card);
 		for (Rule r : card.getRulings()) {
+//			getRuleDao().delete(r);
 			getRuleDao().create(r);
 		}
 	}

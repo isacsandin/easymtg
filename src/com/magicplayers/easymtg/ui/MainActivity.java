@@ -17,12 +17,15 @@ import android.view.Menu;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import com.magicplayers.easymtg.R;
 import com.magicplayers.easymtg.model.Card;
 import com.magicplayers.easymtg.model.CardContainer;
 import com.magicplayers.easymtg.model.DatabaseHelper;
 import com.magicplayers.easymtg.ui.tabs.DummySectionFragment;
 import com.magicplayers.easymtg.ui.tabs.ListViewFragment;
+import com.magicplayers.easymtg.ui.tabs.SearchFragment;
 
 public class MainActivity extends FragmentActivity implements TabListener {
 
@@ -55,11 +58,14 @@ public class MainActivity extends FragmentActivity implements TabListener {
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+     
+//    	populateDataBase();
+    }
 
-    	Gson gson;
-    	
+	@SuppressWarnings("unused")
+	private void populateDataBase() throws JsonSyntaxException, JsonIOException {
+		Gson gson;    	
     	CardContainer response;
-//    	Dao<Card,Integer> dao = DatabaseManager.getInstance().getHelper().getCardDao();
     	DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
     	try {
 			helper.deleteAll();
@@ -83,7 +89,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
         	}
     	}
     	helper.close();
-    }
+	}
 
     public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -96,7 +102,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
             switch (i) {
                 case 0:
                     return new ListViewFragment();
-
+                case 1:
+                	return new SearchFragment();
                 default:
                     Fragment fragment = new DummySectionFragment();
                     Bundle args = new Bundle();
