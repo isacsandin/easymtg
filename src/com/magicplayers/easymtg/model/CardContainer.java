@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName;
 
 public class CardContainer {
 	@SerializedName("cards")
-	public List<CardGson> cards;
+	public List<Card> cards;
 }

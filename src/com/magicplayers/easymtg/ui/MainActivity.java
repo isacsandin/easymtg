@@ -1,6 +1,7 @@
 package com.magicplayers.easymtg.ui;
 
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -17,8 +18,9 @@ import android.view.Menu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.model.Card;
 import com.magicplayers.easymtg.model.CardContainer;
-import com.magicplayers.easymtg.model.CardGson;
+import com.magicplayers.easymtg.model.DatabaseHelper;
 import com.magicplayers.easymtg.ui.tabs.DummySectionFragment;
 import com.magicplayers.easymtg.ui.tabs.ListViewFragment;
 
@@ -53,22 +55,34 @@ public class MainActivity extends FragmentActivity implements TabListener {
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-        try {
-        	String url = "/com/magicplayers/easymtg/resources/AllCards-x.0.json";
-        	InputStreamReader reader = new InputStreamReader(MainActivity.class.getResourceAsStream(url));
-        	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        	CardContainer response = gson.fromJson(reader, CardContainer.class);
-//        	CardGson response = gson.fromJson(reader, CardGson.class);
-        	
-        	//Log.d("DEBUGFODAO", response.get(0).getName());
-        	Log.w(" [BLABLA] ",response.cards.get(0).toString());
-        	
 
-			//JSONReader.importJSON(reader);
-		} catch (Exception e) {
-			e.printStackTrace();
+    	Gson gson;
+    	
+    	CardContainer response;
+//    	Dao<Card,Integer> dao = DatabaseManager.getInstance().getHelper().getCardDao();
+    	DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
+    	try {
+			helper.deleteAll();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		
+    	for(int i = 0; i <= 3; i++){
+    		String url = "/com/magicplayers/easymtg/resources/AllCards-x."+i+".json";
+        	InputStreamReader reader = new InputStreamReader(MainActivity.class.getResourceAsStream(url));
+        	gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        	response = gson.fromJson(reader, CardContainer.class);
+        	Log.w(" [BLABLA] ",response.cards.get(0).toString());
+        	for(Card c:response.cards){
+        			try {
+						helper.addCard(c);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        	}
+    	}
+    	helper.close();
     }
 
     public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {

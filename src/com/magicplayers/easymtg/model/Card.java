@@ -1,81 +1,115 @@
 package com.magicplayers.easymtg.model;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.Collection;
 
-import com.j256.ormlite.dao.ForeignCollection;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Card {
 	
 	@DatabaseField(generatedId=true)
+	@SerializedName("id")
     private int id;
 	
 	@DatabaseField
-	private Vector<String> names;
+	@SerializedName("name")
+	private String name;
 	
 	@DatabaseField
+	@SerializedName("names")
+	private String names;
+	
+	@DatabaseField
+	@SerializedName("manaCost")
 	private String manaCost;
 	
 	@DatabaseField
+	@SerializedName("cmc")
 	private int cmc;
 	
 	@DatabaseField
-	private Vector<String> colors;
+	@SerializedName("colors")
+	private String colors;
 	
 	@DatabaseField
+	@SerializedName("type")
 	private String type;
 	
 	@DatabaseField
-	private Vector<String> supertypes;
+	@SerializedName("supertypes")
+	private String supertypes;
 	
 	@DatabaseField
-	private Vector<String> types;
+	@SerializedName("types")
+	private String types;
 	
 	@DatabaseField
-	private Vector<String> subtypes;
+	@SerializedName("subtypes")
+	private String subtypes;
 	
 	@DatabaseField
+	@SerializedName("rarity")
 	private String rarity;
 	
 	@DatabaseField
+	@SerializedName("text")
 	private String text;
 	
 	@DatabaseField
+	@SerializedName("flavor")
 	private String flavor;
 	
 	@DatabaseField
+	@SerializedName("artist")
 	private String artist;
 	
 	@DatabaseField
+	@SerializedName("power")
 	private String power;
 	
 	@DatabaseField
+	@SerializedName("toughness")
 	private String toughness;
 	
 	@DatabaseField
+	@SerializedName("loyalty")
 	private String loyalty;
 	
 	@DatabaseField
-	private Vector<Integer> variations;
+	@SerializedName("variations")
+	private String variations;
 	
 	@DatabaseField
+	@SerializedName("imageName")
 	private String imageName;
 	
 	@DatabaseField
-	private Vector<String> printings;
+	@SerializedName("printings")
+	private String printings;
 	
-    @DatabaseField(foreign=true,foreignAutoRefresh=true)
-	private ForeignCollection<Rule> rulings;
+	@ForeignCollectionField(eager = true)
+    @SerializedName("rulings")
+	private Collection<Rule> rulings;
 	
 	
 	public Card(){
 		
 	}
-
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
 	public String getManaCost() {
 		return manaCost;
 	}
@@ -84,12 +118,12 @@ public class Card {
 		this.manaCost = manaCost;
 	}
 
-	public Vector<String> getNames() {
+	public String getNames() {
 		return names;
 	}
 
 	public void setNames(String name) {
-		this.names.add(name);
+		this.names =name;
 	}
 
 	public int getCmc() {
@@ -108,28 +142,28 @@ public class Card {
 		this.type = type;
 	}
 
-	public Vector<String> getSupertypes() {
+	public String getSupertypes() {
 		return supertypes;
 	}
 
 	public void setSupertypes(String supertype) {
-		this.supertypes.add(supertype);
+		this.supertypes = supertype;
 	}
 
-	public Vector<String> getTypes() {
+	public String getTypes() {
 		return types;
 	}
 
 	public void setTypes(String type) {
-		this.types.add(type);
+		this.types =type;
 	}
 
-	public Vector<String> getSubtypes() {
+	public String getSubtypes() {
 		return subtypes;
 	}
 
 	public void setSubtypes(String subtype) {
-		this.subtypes.add(subtype);
+		this.subtypes =subtype;
 	}
 
 	public String getRarity() {
@@ -188,12 +222,12 @@ public class Card {
 		this.loyalty = loyalty;
 	}
 
-	public Vector<Integer> getVariations() {
+	public String getVariations() {
 		return variations;
 	}
 
-	public void setVariations(int variation) {
-		this.variations.add(variation);
+	public void setVariations(String variation) {
+		this.variations = variation;
 	}
 
 	public String getImageName() {
@@ -204,31 +238,39 @@ public class Card {
 		this.imageName = imageName;
 	}
 
-	public Vector<String> getColors() {
+	public String getColors() {
 		return colors;
 	}
 
 	public void setColors(String color) {
-		this.colors.add(color);
+		this.colors = color;
 	}
 
-	public Vector<String> getPrintings() {
+	public String getPrintings() {
 		return printings;
 	}
 
 	public void setPrintings(String print) {
-		this.printings.add(print);
+		this.printings = print;
 	}
 	
-	public List<Rule> getRulings() {
+	public Collection<Rule> getRulings() {
 		ArrayList<Rule> rulingsl = new ArrayList<Rule>();
-		for(Rule r:rulings){
-			rulingsl.add(r);
+		if(this.rulings != null){
+			for(Rule r:rulings){
+				rulingsl.add(r);
+			}
 		}
 		return rulingsl;
 	}
 
-	public void setRulings(ForeignCollection<Rule> rulings) {
+	public void setRulings(Collection<Rule> rulings) {
 		this.rulings = rulings;
+	}
+
+	@Override
+	public String toString() {
+    	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		return gson.toJson(this);
 	}
 }
