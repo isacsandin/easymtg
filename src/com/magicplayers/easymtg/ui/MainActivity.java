@@ -91,6 +91,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		        downloadTask.cancel(true);
 		    }
 		});
+
 	}
 
 	@SuppressWarnings("unused")
