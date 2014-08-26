@@ -7,25 +7,25 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Rule {
-	@DatabaseField (foreign = true, foreignAutoRefresh = true)
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Card card;
-	
-	@DatabaseField(generatedId=true)
-    private int id;
-	
+
+	@DatabaseField(generatedId = true)
+	private int id;
+
 	@DatabaseField
 	private Date date;
-	
+
 	@DatabaseField
 	private String text;
-	
+
 	public Rule(Date date, String text) {
 		this.setDate(date);
 		this.setText(text);
 	}
 
-	public Rule(){
-		
+	public Rule() {
+
 	}
 
 	public Date getDate() {

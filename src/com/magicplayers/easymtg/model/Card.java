@@ -12,104 +12,103 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Card {
-	
-	@DatabaseField(generatedId=true)
+
+	@DatabaseField(generatedId = true)
 	@SerializedName("id")
-    private int id;
-	
+	private int id;
+
 	@DatabaseField
 	@SerializedName("name")
 	private String name;
-	
+
 	@DatabaseField
 	@SerializedName("names")
 	private String names;
-	
+
 	@DatabaseField
 	@SerializedName("manaCost")
 	private String manaCost;
-	
+
 	@DatabaseField
 	@SerializedName("cmc")
 	private int cmc;
-	
+
 	@DatabaseField
 	@SerializedName("colors")
 	private String colors;
-	
+
 	@DatabaseField
 	@SerializedName("type")
 	private String type;
-	
+
 	@DatabaseField
 	@SerializedName("supertypes")
 	private String supertypes;
-	
+
 	@DatabaseField
 	@SerializedName("types")
 	private String types;
-	
+
 	@DatabaseField
 	@SerializedName("subtypes")
 	private String subtypes;
-	
+
 	@DatabaseField
 	@SerializedName("rarity")
 	private String rarity;
-	
+
 	@DatabaseField
 	@SerializedName("text")
 	private String text;
-	
+
 	@DatabaseField
 	@SerializedName("flavor")
 	private String flavor;
-	
+
 	@DatabaseField
 	@SerializedName("artist")
 	private String artist;
-	
+
 	@DatabaseField
 	@SerializedName("power")
 	private String power;
-	
+
 	@DatabaseField
 	@SerializedName("toughness")
 	private String toughness;
-	
+
 	@DatabaseField
 	@SerializedName("loyalty")
 	private String loyalty;
-	
+
 	@DatabaseField
 	@SerializedName("variations")
 	private String variations;
-	
+
 	@DatabaseField
 	@SerializedName("imageName")
 	private String imageName;
-	
+
 	@DatabaseField
 	@SerializedName("printings")
 	private String printings;
-	
+
 	@ForeignCollectionField(eager = true)
-    @SerializedName("rulings")
+	@SerializedName("rulings")
 	private Collection<Rule> rulings;
-	
-	
-	public Card(){
-		
+
+	public Card() {
+
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getManaCost() {
 		return manaCost;
 	}
@@ -123,7 +122,7 @@ public class Card {
 	}
 
 	public void setNames(String name) {
-		this.names =name;
+		this.names = name;
 	}
 
 	public int getCmc() {
@@ -155,7 +154,7 @@ public class Card {
 	}
 
 	public void setTypes(String type) {
-		this.types =type;
+		this.types = type;
 	}
 
 	public String getSubtypes() {
@@ -163,7 +162,7 @@ public class Card {
 	}
 
 	public void setSubtypes(String subtype) {
-		this.subtypes =subtype;
+		this.subtypes = subtype;
 	}
 
 	public String getRarity() {
@@ -253,11 +252,11 @@ public class Card {
 	public void setPrintings(String print) {
 		this.printings = print;
 	}
-	
+
 	public Collection<Rule> getRulings() {
 		ArrayList<Rule> rulingsl = new ArrayList<Rule>();
-		if(this.rulings != null){
-			for(Rule r:rulings){
+		if (this.rulings != null) {
+			for (Rule r : rulings) {
 				rulingsl.add(r);
 			}
 		}
@@ -270,7 +269,7 @@ public class Card {
 
 	@Override
 	public String toString() {
-    	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		return gson.toJson(this);
 	}
 }
