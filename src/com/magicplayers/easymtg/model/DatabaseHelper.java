@@ -1,22 +1,16 @@
 package com.magicplayers.easymtg.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
-
-	private static final String DATABASE_NAME = "EasyMTG.sqlite";
 
 	// any time you make changes to your database objects, you may have to
 	// increase the database version
@@ -25,46 +19,45 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private Dao<Card, Integer> cardDao = null;
 	private Dao<Rule, Integer> ruleDao = null;
 
-	public DatabaseHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	public DatabaseHelper(Context context,String databasePath) {
+		super(context, databasePath, null, DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase database,
 			ConnectionSource connectionSource) {
-		try {
-			TableUtils.createTable(connectionSource, Card.class);
-			TableUtils.createTable(connectionSource, Rule.class);
-			Log.i(DatabaseHelper.class.getName(), "Funcionou.");
-		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
-			throw new RuntimeException(e);
-		} catch (java.sql.SQLException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			TableUtils.createTable(connectionSource, Card.class);
+//			TableUtils.createTable(connectionSource, Rule.class);
+//			Log.i(DatabaseHelper.class.getName(), "Funcionou.");
+//		} catch (SQLException e) {
+//			Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
+//			throw new RuntimeException(e);
+//		} catch (java.sql.SQLException e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
 			int oldVersion, int newVersion) {
-		try {
-			List<String> allSql = new ArrayList<String>();
-			switch (oldVersion) {
-			case 1:
-				// allSql.add("alter table AdData add column `new_col` VARCHAR");
-				// allSql.add("alter table AdData add column `new_col2` VARCHAR");
-				break;
-			}
-			for (String sql : allSql) {
-				db.execSQL(sql);
-			}
-		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(), "exception during onUpgrade",
-					e);
-			throw new RuntimeException(e);
-		}
-
+//		try {
+//			List<String> allSql = new ArrayList<String>();
+//			switch (oldVersion) {
+//			case 1:
+//				// allSql.add("alter table AdData add column `new_col` VARCHAR");
+//				// allSql.add("alter table AdData add column `new_col2` VARCHAR");
+//				break;
+//			}
+//			for (String sql : allSql) {
+//				db.execSQL(sql);
+//			}
+//		} catch (SQLException e) {
+//			Log.e(DatabaseHelper.class.getName(), "exception during onUpgrade",
+//					e);
+//			throw new RuntimeException(e);
+//		}
 	}
 
 	public void deleteAll() throws java.sql.SQLException {
@@ -114,5 +107,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			}
 		}
 		return ruleDao;
+	}
+	
+	public List<String[]> getCardNames(){
+		List<String[]> results = null;
+		try {
+		    GenericRawResults<String[]> rawResults = getCardDao().queryRaw("select name,imageName from Card");
+		    results = rawResults.getResults();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return results;
 	}
 }

@@ -1,13 +1,12 @@
 package com.magicplayers.easymtg.ui;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.SQLException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,18 +23,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.model.Card;
-import com.magicplayers.easymtg.model.CardContainer;
-import com.magicplayers.easymtg.model.DatabaseHelper;
 import com.magicplayers.easymtg.ui.tabs.DummySectionFragment;
 import com.magicplayers.easymtg.ui.tabs.ListViewFragment;
 import com.magicplayers.easymtg.ui.tabs.SearchFragment;
@@ -45,12 +36,17 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 	AppSectionsPagerAdapter mAppSectionsPagerAdapter;
 	ViewPager mViewPager;
 	ProgressDialog mProgressDialog;
-	final String DATABASE_PATH = getExternalFilesDir(null)+"/easymtg.sqlite";
+	String DATABASE_PATH;
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		String root = getExternalFilesDir(null).getAbsolutePath();
+	    File myDir = new File(root + "/databases");    
+	    myDir.mkdirs();
+	    DATABASE_PATH = root+"/easymtg.sqlite";
 
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -75,54 +71,11 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 					.setTabListener(this));
 		}
 		
-		mProgressDialog = new ProgressDialog(MainActivity.this);
-		mProgressDialog.setMessage("Downloading data...");
-		mProgressDialog.setIndeterminate(true);
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		mProgressDialog.setCancelable(true);
-
-		// execute this when the downloader must be fired
-		final DownloadTask downloadTask = new DownloadTask(MainActivity.this,DATABASE_PATH);
-		downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/database/current.sqlite");
-
-		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-		        downloadTask.cancel(true);
-		    }
-		});
-
-	}
-
-	@SuppressWarnings("unused")
-	private void populateDataBase() throws JsonSyntaxException, JsonIOException {
-		Gson gson;
-		CardContainer response;
-		DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
-		try {
-			helper.deleteAll();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		File file = new File(DATABASE_PATH);
+		if(!file.exists()){
+			dispatchDownloadDatabase();
 		}
-		for (int i = 0; i <= 3; i++) {
-			String url = "/com/magicplayers/easymtg/resources/AllCards-x." + i
-					+ ".json";
-			InputStreamReader reader = new InputStreamReader(
-					MainActivity.class.getResourceAsStream(url));
-			gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-			response = gson.fromJson(reader, CardContainer.class);
-			Log.w(" [BLABLA] ", response.cards.get(0).toString());
-			for (Card c : response.cards) {
-				try {
-					helper.addCard(c);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		helper.close();
+		
 	}
 
 	public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
@@ -156,6 +109,25 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		public CharSequence getPageTitle(int position) {
 			return "Section " + (position + 1);
 		}
+	}
+
+	private void dispatchDownloadDatabase() {
+		mProgressDialog = new ProgressDialog(MainActivity.this);
+		mProgressDialog.setMessage("Downloading data...");
+		mProgressDialog.setIndeterminate(true);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		mProgressDialog.setCancelable(true);
+
+		// execute this when the downloader must be fired
+		final DownloadTask downloadTask = new DownloadTask(MainActivity.this,DATABASE_PATH);
+		downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/database/current.sqlite");
+
+		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+		    @Override
+		    public void onCancel(DialogInterface dialog) {
+		        downloadTask.cancel(true);
+		    }
+		});
 	}
 
 	@Override

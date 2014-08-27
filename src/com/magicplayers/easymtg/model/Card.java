@@ -13,7 +13,9 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Card {
 
-	@DatabaseField(generatedId = true)
+	public final static String ID_FIELD_NAME = "id";
+	
+	@DatabaseField(generatedId = true,columnName = ID_FIELD_NAME)
 	@SerializedName("id")
 	private int id;
 
@@ -31,7 +33,7 @@ public class Card {
 
 	@DatabaseField
 	@SerializedName("cmc")
-	private int cmc;
+	private String cmc;
 
 	@DatabaseField
 	@SerializedName("colors")
@@ -125,11 +127,11 @@ public class Card {
 		this.names = name;
 	}
 
-	public int getCmc() {
+	public String getCmc() {
 		return cmc;
 	}
 
-	public void setCmc(int cmc) {
+	public void setCmc(String cmc) {
 		this.cmc = cmc;
 	}
 

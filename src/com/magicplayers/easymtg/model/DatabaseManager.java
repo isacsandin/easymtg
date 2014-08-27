@@ -6,9 +6,9 @@ public class DatabaseManager {
 
 	static private DatabaseManager instance;
 
-	static public void init(Context ctx) {
+	static public void init(Context ctx,String databasePath) {
 		if (null == instance) {
-			instance = new DatabaseManager(ctx);
+			instance = new DatabaseManager(ctx,databasePath);
 		}
 	}
 
@@ -18,8 +18,8 @@ public class DatabaseManager {
 
 	private DatabaseHelper helper;
 
-	private DatabaseManager(Context ctx) {
-		helper = new DatabaseHelper(ctx);
+	private DatabaseManager(Context ctx,String databasePath) {
+		helper = new DatabaseHelper(ctx,databasePath);
 	}
 
 	public DatabaseHelper getHelper() {
