@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 
 		// execute this when the downloader must be fired
 		final DownloadTask downloadTask = new DownloadTask(MainActivity.this,DATABASE_PATH);
-		downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/current.sqlite");
+		downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/database/current.sqlite");
 
 		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 		    @Override
