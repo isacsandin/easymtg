@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		String root = getExternalFilesDir(null).getAbsolutePath();
 	    File myDir = new File(root + "/databases");    
 	    myDir.mkdirs();
-	    DATABASE_PATH = root+"/easymtg.sqlite";
+	    DATABASE_PATH = root+"/databases/easymtg.sqlite";
 
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -72,6 +73,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		}
 		
 		File file = new File(DATABASE_PATH);
+		Log.e("BLABLA",DATABASE_PATH);
 		if(!file.exists()){
 			dispatchDownloadDatabase();
 		}

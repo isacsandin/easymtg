@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -21,6 +22,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	public DatabaseHelper(Context context,String databasePath) {
 		super(context, databasePath, null, DATABASE_VERSION);
+		Log.e("BLABLA",databasePath);
 	}
 
 	@Override
@@ -112,7 +114,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public List<String[]> getCardNames(){
 		List<String[]> results = null;
 		try {
-		    GenericRawResults<String[]> rawResults = getCardDao().queryRaw("select name,imageName from Card");
+		    GenericRawResults<String[]> rawResults = getCardDao()
+		    		.queryRaw("select Card.name ,Card.imageName, Edition.code  from Card,Edition,CardEdition " +
+		    				"where CardEdition.card_id=Card.id and CardEdition.edition_id=Edition.id");
 		    results = rawResults.getResults();
 		} catch (Exception e) {
 		    e.printStackTrace();
