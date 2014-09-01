@@ -3,7 +3,7 @@ package com.magicplayers.easymtg.lazylist;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Utils {
+public class LazyListUtils {
     public static void CopyStream(InputStream is, OutputStream os)
     {
         final int buffer_size=1024;

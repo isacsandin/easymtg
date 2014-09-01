@@ -1,13 +1,13 @@
 package com.magicplayers.easymtg.lazylist;
 
-public class ItemListView {
+public class LazyListItem {
 	private String texto;
 	private String imageUrl;
 
-	public ItemListView() {
+	public LazyListItem() {
 	}
 
-	public ItemListView(String texto, String imageUrl) {
+	public LazyListItem(String texto, String imageUrl) {
 		this.texto = texto;
 		this.imageUrl = imageUrl;
 	}

@@ -19,8 +19,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.lazylist.ItemListView;
-import com.magicplayers.easymtg.lazylist.LazyAdapter;
+import com.magicplayers.easymtg.lazylist.LazyListItem;
+import com.magicplayers.easymtg.lazylist.LazyListAdapter;
 import com.magicplayers.easymtg.model.DatabaseHelper;
 
 public class SearchFragment extends Fragment implements OnItemClickListener {
@@ -28,16 +28,12 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 
 	// List view
 	private ListView listView;
-	private LazyAdapter adapter;
+	private LazyListAdapter lazyListAdapter;
 
-//	private AdapterListView adapterListView;
-	private ArrayList<ItemListView> itens;
+	private ArrayList<LazyListItem> itens;
 
 	private Context thiscontext;
 	private String DATABASE_PATH;
-    private String[] imgPath;
-	// Listview Adapter
-//	ArrayAdapter<String> adapter;
 
 	// Search EditText
 	EditText inputSearch;
@@ -63,7 +59,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 			public void onTextChanged(CharSequence cs, int arg1, int arg2,
 					int arg3) {
 				// When user changed the Text
-//				adapterListView.getFilter().filter(cs);
+				lazyListAdapter.getFilter().filter(cs);
 			}
 
 			@Override
@@ -82,7 +78,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 
 	private void createListView() {
 		Log.e("CREATELISTVIEW","Begin...");
-		itens = new ArrayList<ItemListView>();
+		itens = new ArrayList<LazyListItem>();
 		DatabaseHelper helper = new DatabaseHelper(thiscontext,DATABASE_PATH);
 		try {
 			List<String[]> cards = helper.getCardNames();
@@ -90,25 +86,19 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 				Log.e("CREATELISTVIEW",row[0]+" "+row[1]);
 				//http://mtgimage.com/set/ARB/Sen%20Triplets.jpg
 				String url = String.format("http://mtgimage.com/set/%s/%s.jpg",row[2],row[1]);
-				itens.add(new ItemListView(row[0],url));
+				itens.add(new LazyListItem(row[0],url));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		adapter=new LazyAdapter(this.getActivity(), itens);
-	    listView.setAdapter(adapter);
-		// Cria o adapter
-		//adapterListView = new AdapterListView(thiscontext, itens);
-		// Adding items to listview
-		//listView.setAdapter(adapterListView);
+		lazyListAdapter=new LazyListAdapter(this.getActivity(), itens);
+	    listView.setAdapter(lazyListAdapter);
 		Log.e("CREATELISTVIEW","End...");
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// Pega o item que foi selecionado.
-		//ItemListView item = adapterListView.getItem(arg2);
-		ItemListView item = adapter.getItem(arg2);
-		Toast.makeText(thiscontext, "VocÃª Clicou em: " + item.getTexto(),
+		LazyListItem item = lazyListAdapter.getItem(arg2);
+		Toast.makeText(thiscontext, "Você Clicou em: " + item.getTexto(),
 				Toast.LENGTH_LONG).show();
 	}
 	
