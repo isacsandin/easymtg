@@ -10,5 +10,8 @@
     <string name="demo_collection">Demo Collection</string>
     
     <string name="search_hint_text">Search a Card</string>
+    <string name="title">Card Title</string>
+    <string name="type">Card Type</string>
+    <string name="power">*/*</string>
 
 </resources>
