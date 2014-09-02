@@ -66,7 +66,7 @@ public class AdapterListView extends BaseAdapter implements Filterable {
 		// atravez do layout pego pelo LayoutInflater, pegamos cada id
 		// relacionado
 		// ao item e definimos as .
-		((TextView) view.findViewById(R.id.text)).setText(item.getTexto());
+		((TextView) view.findViewById(R.id.title)).setText(item.getTexto());
 		((ImageView) view.findViewById(R.id.imagemview)).setImageResource(item
 				.getIconeRid());
 

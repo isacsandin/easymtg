@@ -86,7 +86,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 				Log.e("CREATELISTVIEW",row[0]+" "+row[1]);
 				//http://mtgimage.com/set/ARB/Sen%20Triplets.jpg
 				String url = String.format("http://mtgimage.com/set/%s/%s.jpg",row[2],row[1]);
-				itens.add(new LazyListItem(row[0],url));
+				itens.add(new LazyListItem(row[0],url, row[3], row[4]));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		LazyListItem item = lazyListAdapter.getItem(arg2);
-		Toast.makeText(thiscontext, "Você Clicou em: " + item.getTexto(),
+		Toast.makeText(thiscontext, "Vocï¿½ Clicou em: " + item.getTexto(),
 				Toast.LENGTH_LONG).show();
 	}
 	

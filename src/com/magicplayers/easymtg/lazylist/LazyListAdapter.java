@@ -6,6 +6,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.model.ManaSymbol;
 
 
 @SuppressLint("InflateParams")
@@ -49,13 +51,19 @@ public class LazyListAdapter extends BaseAdapter implements Filterable{
     
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
+       
         if(convertView==null)
             vi = inflater.inflate(R.layout.item_list, null);
 
-        TextView text=(TextView)vi.findViewById(R.id.text);
+        TextView title=(TextView)vi.findViewById(R.id.title);
         ImageView image=(ImageView)vi.findViewById(R.id.imagemview);
-        text.setText(data.get(position).getTexto());
+        title.setText(data.get(position).getTexto());
         imageLoader.DisplayImage(data.get(position).getImageUrl(), image);
+        Drawable symbol = ManaSymbol.getManaSymbol(vi.getContext(), data.get(position).getManaCost());
+        ImageView manaSymbol=(ImageView)vi.findViewById(R.id.manaCost);
+        manaSymbol.setImageDrawable(symbol);
+        TextView type=(TextView)vi.findViewById(R.id.type);
+        type.setText(data.get(position).getType());
         return vi;
     }
     
