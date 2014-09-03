@@ -34,7 +34,7 @@ public class LazyListAdapter extends BaseAdapter implements Filterable{
         this.data=data;
         this.data_backup = data;
         this.inflater = (LayoutInflater)this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.imageLoader=new ImageLoader(this.activity.getApplicationContext());
+        this.imageLoader=new ImageLoader(this.activity.getApplicationContext(),true);
     }
 
     public int getCount() {

@@ -14,10 +14,11 @@ public class FullScreenViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_fullscreen_image);
-		this.imageLoader=new ImageLoader(this.getApplicationContext());
-		ImageView image=(ImageView)this.findViewById(R.id.imagemview);
+		imageLoader=new ImageLoader(this.getApplicationContext(),false);
+		ImageView image=(ImageView)this.findViewById(R.id.imgDisplay);
 		Intent i = getIntent();
 		String photoUrl = i.getExtras().getString("photoUrl");
+		//photoUrl.replace(".jpg", ".full.jpg");
 		imageLoader.DisplayImage(photoUrl, image);
 	}
 

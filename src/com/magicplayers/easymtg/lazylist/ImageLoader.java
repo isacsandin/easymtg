@@ -28,16 +28,19 @@ public class ImageLoader {
     
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
+    public boolean scaleImages; 
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
     Handler handler=new Handler();//handler to display images in UI thread
     
-    public ImageLoader(Context context){
+    public ImageLoader(Context context, boolean scaleImages){
+    	this.scaleImages = scaleImages;
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
     
     final int stub_id=R.drawable.stub;
+    
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);
@@ -62,7 +65,9 @@ public class ImageLoader {
         File f=fileCache.getFile(url);
         
         //from SD cache
-        Bitmap b = decodeFile(f);
+        Bitmap b;
+        if(scaleImages) b = decodeFile(f);
+        else b = decodeFileNotScale(f);
         if(b!=null)
             return b;
         
@@ -87,6 +92,23 @@ public class ImageLoader {
                memoryCache.clear();
            return null;
         }
+    }
+    
+    private Bitmap decodeFileNotScale(File f){
+        try {
+            //decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            FileInputStream stream1=new FileInputStream(f);
+            Bitmap bitmap=BitmapFactory.decodeStream(stream1,null,o);
+            stream1.close();
+            
+            return bitmap;
+        } catch (FileNotFoundException e) {
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //decodes image and scales it to reduce memory consumption
