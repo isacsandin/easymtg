@@ -116,7 +116,14 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return "Section " + (position + 1);
+			switch (position) {
+			case 0:
+				return "Deck Library";
+			case 1:
+				return "Card Search";
+			default:
+				return "Life Counter";
+			}
 		}
 	}
 	
