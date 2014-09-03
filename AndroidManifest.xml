@@ -29,10 +29,11 @@
             </intent-filter>
         </activity>
         
-         <activity
-            android:name="info.androidhive.imageslider.FullScreenViewActivity"
+        <activity
+            android:name="com.magicplayers.easymtg.fullscreen.image.FullScreenViewActivity"
             android:theme="@style/AppTheme">
         </activity>
+        
     </application>
 
 </manifest>

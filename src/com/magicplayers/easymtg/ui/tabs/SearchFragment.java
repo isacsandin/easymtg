@@ -4,28 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.lazylist.ImageLoader;
-import com.magicplayers.easymtg.lazylist.LazyListItem;
+import com.magicplayers.easymtg.fullscreen.image.FullScreenViewActivity;
 import com.magicplayers.easymtg.lazylist.LazyListAdapter;
+import com.magicplayers.easymtg.lazylist.LazyListItem;
 import com.magicplayers.easymtg.model.DatabaseHelper;
 
 public class SearchFragment extends Fragment implements OnItemClickListener {
@@ -105,8 +102,10 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		LazyListItem item = lazyListAdapter.getItem(arg2);
-		Toast.makeText(thiscontext, "Voc� Clicou em: " + item.getTexto(),
-				Toast.LENGTH_LONG).show();	
+//		Toast.makeText(thiscontext, "Voc� Clicou em: " + item.getTexto(), Toast.LENGTH_LONG).show();	
+        Intent i = new Intent(thiscontext, FullScreenViewActivity.class);
+        i.putExtra("photoUrl", item.getImageUrl());
+        thiscontext.startActivity(i);
 	}
 	
 }
