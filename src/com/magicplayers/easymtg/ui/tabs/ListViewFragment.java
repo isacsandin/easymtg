@@ -53,14 +53,14 @@ public class ListViewFragment extends Fragment implements OnItemClickListener {
 	private void createListView() {
 		// Criamos nossa lista que preenchera o ListView
 		itens = new ArrayList<ItemListView>();
-		ItemListView item1 = new ItemListView("Guilherme Biff",
-				R.drawable.ic_launcher);
-		ItemListView item2 = new ItemListView("Lucas Volgarini",
-				R.drawable.ic_launcher);
-		ItemListView item3 = new ItemListView("Eduardo Ricoldi",
-				R.drawable.ic_launcher);
-		ItemListView item4 = new ItemListView("Felipe Panngo",
-				R.drawable.ic_launcher);
+		ItemListView item1 = new ItemListView("Deck 1",
+				R.drawable.icon);
+		ItemListView item2 = new ItemListView("Deck 2",
+				R.drawable.icon);
+		ItemListView item3 = new ItemListView("Deck 3",
+				R.drawable.icon);
+		ItemListView item4 = new ItemListView("Deck 4",
+				R.drawable.icon);
 
 		itens.add(item1);
 		itens.add(item2);
@@ -72,15 +72,14 @@ public class ListViewFragment extends Fragment implements OnItemClickListener {
 
 		// Define o Adapter
 		listView.setAdapter(adapterListView);
-		// Cor quando a lista é selecionada para ralagem.
+		// Cor quando a lista � selecionada para ralagem.
 		listView.setCacheColorHint(Color.TRANSPARENT);
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// Pega o item que foi selecionado.
 		ItemListView item = adapterListView.getItem(arg2);
-		// Demostração
-		Toast.makeText(thiscontext, "Você Clicou em: " + item.getTexto(),
+		Toast.makeText(thiscontext, "Voc� Clicou em: " + item.getTexto(),
 				Toast.LENGTH_LONG).show();
 	}
 }

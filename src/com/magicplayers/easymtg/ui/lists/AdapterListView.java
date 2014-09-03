@@ -61,13 +61,13 @@ public class AdapterListView extends BaseAdapter implements Filterable {
 		// Pega o item de acordo com a 
 		ItemListView item = itens.get(position);
 		// infla o layout para podermos preencher os dados
-		view = mInflater.inflate(R.layout.item_list, null);
+		view = mInflater.inflate(R.layout.item_list_deck, null);
 
 		// atravez do layout pego pelo LayoutInflater, pegamos cada id
 		// relacionado
 		// ao item e definimos as .
-		((TextView) view.findViewById(R.id.title)).setText(item.getTexto());
-		((ImageView) view.findViewById(R.id.imagemview)).setImageResource(item
+		((TextView) view.findViewById(R.id.deckName)).setText(item.getTexto());
+		((ImageView) view.findViewById(R.id.deckIcon)).setImageResource(item
 				.getIconeRid());
 
 		return view;

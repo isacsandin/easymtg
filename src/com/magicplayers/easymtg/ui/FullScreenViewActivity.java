@@ -18,7 +18,6 @@ public class FullScreenViewActivity extends Activity {
 		ImageView image=(ImageView)this.findViewById(R.id.imgDisplay);
 		Intent i = getIntent();
 		String photoUrl = i.getExtras().getString("photoUrl");
-		//photoUrl.replace(".jpg", ".full.jpg");
 		imageLoader.DisplayImage(photoUrl, image);
 	}
 
