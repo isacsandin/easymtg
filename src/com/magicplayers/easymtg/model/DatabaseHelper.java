@@ -114,9 +114,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public List<String[]> getCardNames(){
 		List<String[]> results = null;
 		try {
-		    GenericRawResults<String[]> rawResults = getCardDao()
-		    		.queryRaw("select Card.name, Card.imageName, Edition.code, Card.type, Card.manaCost  from Card,Edition,CardEdition " +
-		    				"where CardEdition.card_id=Card.id and CardEdition.edition_id=Edition.id");
+			
+			String query = String.format("select Card.name, Card.imageName, Edition.code, Card.type, Card.manaCost " +
+    				" from Card,Edition,CardEdition " +
+    				" where CardEdition.card_id=Card.id and CardEdition.edition_id=Edition.id");
+			Log.e("DATABASE QUERY",query);
+		    GenericRawResults<String[]> rawResults = getCardDao().queryRaw(query);
 		    results = rawResults.getResults();
 		} catch (Exception e) {
 		    e.printStackTrace();

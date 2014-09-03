@@ -1,16 +1,20 @@
 package com.magicplayers.easymtg.ui;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -34,20 +38,22 @@ import com.magicplayers.easymtg.ui.tabs.SearchFragment;
 
 public class MainActivity extends ActionBarActivity implements TabListener {
 
-	AppSectionsPagerAdapter mAppSectionsPagerAdapter;
-	ViewPager mViewPager;
-	ProgressDialog mProgressDialog;
-	String DATABASE_PATH;
+	private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+	private ViewPager mViewPager;
+	public String COMPRESSED_DATABASE_PATH;
+	public String DATABASE_PATH;
+	public String ROOT_PATH;
 
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		String root = getExternalFilesDir(null).getAbsolutePath();
-	    File myDir = new File(root + "/databases");    
+		ROOT_PATH = getExternalFilesDir(null).getAbsolutePath()+"/databases";
+	    File myDir = new File(ROOT_PATH);    
 	    myDir.mkdirs();
-	    DATABASE_PATH = root+"/databases/easymtg.sqlite";
+	    COMPRESSED_DATABASE_PATH = ROOT_PATH+"/easymtg.sqlite.gz";
+	    DATABASE_PATH = ROOT_PATH+"/easymtg.sqlite";
 
 		mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -72,12 +78,13 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 					.setTabListener(this));
 		}
 		
-		File file = new File(DATABASE_PATH);
-		Log.e("BLABLA",DATABASE_PATH);
-		if(!file.exists()){
-			dispatchDownloadDatabase();
+		File compressedFile = new File(COMPRESSED_DATABASE_PATH);
+		File databaseFile = new File(DATABASE_PATH);
+		Log.e("BLABLA",COMPRESSED_DATABASE_PATH);
+		if(!compressedFile.exists()){
+			DownloadTask downloadTask = new DownloadTask(this,COMPRESSED_DATABASE_PATH);
+			downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/database/current.sqlite.gz");
 		}
-		
 	}
 
 	public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
@@ -112,26 +119,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 			return "Section " + (position + 1);
 		}
 	}
-
-	private void dispatchDownloadDatabase() {
-		mProgressDialog = new ProgressDialog(MainActivity.this);
-		mProgressDialog.setMessage("Downloading data...");
-		mProgressDialog.setIndeterminate(true);
-		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		mProgressDialog.setCancelable(true);
-
-		// execute this when the downloader must be fired
-		final DownloadTask downloadTask = new DownloadTask(MainActivity.this,DATABASE_PATH);
-		downloadTask.execute("https://dl.dropboxusercontent.com/u/5958311/database/current.sqlite");
-
-		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-		        downloadTask.cancel(true);
-		    }
-		});
-	}
-
+	
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
@@ -155,7 +143,7 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+		
 	//usually, subclasses of AsyncTask are declared inside the activity class.
 	//that way, you can easily modify the UI thread from here
 	private class DownloadTask extends AsyncTask<String, Integer, String> {
@@ -163,10 +151,16 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 		private Context context;
 		private PowerManager.WakeLock mWakeLock;
 		private String outputFilename;
+		private ProgressDialog mProgressDialog;
 
 		public DownloadTask(Context context, String outpuFilename) {
 			this.context = context;
 			this.outputFilename = outpuFilename;
+			mProgressDialog = new ProgressDialog(this.context);
+			mProgressDialog.setMessage("Downloading data...");
+			mProgressDialog.setIndeterminate(true);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setCancelable(false);
 		}
 
 		@Override
@@ -251,6 +245,8 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 
 		@Override
 		protected void onPostExecute(String result) {
+			DecompressTask decompressTask = new DecompressTask(context,COMPRESSED_DATABASE_PATH,DATABASE_PATH);
+			decompressTask.execute();
 			mWakeLock.release();
 			mProgressDialog.dismiss();
 			if (result != null)
@@ -261,5 +257,90 @@ public class MainActivity extends ActionBarActivity implements TabListener {
 						.show();
 		}
 	}
+	
+	private class DecompressTask extends AsyncTask<Void, Integer, Integer> {
 
+		   private String mZipFile;   
+		   private String mLocation;
+		   private Context context;
+		   private PowerManager.WakeLock mWakeLock;
+		   private ProgressDialog mProgressDialog;
+		   private int per = 0;
+
+		    public DecompressTask(Context context, String input, String output) {
+		            this.mZipFile = input;     
+		            this.mLocation = output;
+		            this.context = context;
+					mProgressDialog = new ProgressDialog(this.context);
+					mProgressDialog.setMessage("Decompressing data...");
+					mProgressDialog.setIndeterminate(true);
+					mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+					mProgressDialog.setCancelable(false);
+		    }
+			@Override
+		     protected Integer doInBackground(Void... params) {
+		        	 byte[] buffer = new byte[1024];
+		        	 int total_bites_read = 0;
+		     		 try {
+		     			FileInputStream fileIn = new FileInputStream(mZipFile);
+		     			long fileLength = fileIn.getChannel().size();
+		     			GZIPInputStream gZIPInputStream = new GZIPInputStream(fileIn);
+		     			FileOutputStream fileOutputStream = new FileOutputStream(mLocation);
+		     			int bytes_read;
+		     			while ((bytes_read = gZIPInputStream.read(buffer)) > 0) {
+		     				fileOutputStream.write(buffer, 0, bytes_read);
+			     			total_bites_read += bytes_read;
+			     			publishProgress((int) (total_bites_read * 100 / fileLength));
+		     			}
+		     			gZIPInputStream.close();
+		     			fileOutputStream.close();
+		     			
+		     		} catch (IOException ex) {
+		     			ex.printStackTrace();
+		     		}
+		     		return total_bites_read;
+		     }
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				// take CPU lock to prevent CPU from going off if the user
+				// presses the power button during download
+				PowerManager pm = (PowerManager) context
+						.getSystemService(Context.POWER_SERVICE);
+				mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass()
+						.getName());
+				mWakeLock.acquire();
+				mProgressDialog.show();
+			}
+		    @Override
+		     protected void onProgressUpdate(Integer... progress) {
+		    	super.onProgressUpdate(progress);
+				mProgressDialog.setIndeterminate(false);
+				mProgressDialog.setMax(100);
+				mProgressDialog.setProgress(progress[0]);
+		    }
+		    @Override
+		    protected void onPostExecute(Integer result) {
+		    	mWakeLock.release();
+		    	new AlertDialog.Builder(context)
+		        //.setIcon(android.R.drawable.ic_dialog_alert)
+		        .setTitle("Restart App")
+		        .setMessage("All done, now click ok to restart application")
+		        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+				    {
+				        @Override
+				        public void onClick(DialogInterface dialog, int which) {
+				           Intent i = getBaseContext().getPackageManager()
+				                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+					       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					       startActivity(i);   
+				        }
+			
+				    })
+			    .show();
+		    	 mProgressDialog.dismiss();
+		         Log.i("TAG","Completed. Total size: "+result);
+		    }
+	 }		     
 }
+
