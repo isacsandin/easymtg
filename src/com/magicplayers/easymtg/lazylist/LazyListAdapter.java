@@ -53,7 +53,7 @@ public class LazyListAdapter extends BaseAdapter implements Filterable{
         View vi=convertView;
        
         if(convertView==null)
-            vi = inflater.inflate(R.layout.item_list, null);
+            vi = inflater.inflate(R.layout.item_list_card, null);
 
         TextView title=(TextView)vi.findViewById(R.id.title);
         ImageView image=(ImageView)vi.findViewById(R.id.imagemview);
