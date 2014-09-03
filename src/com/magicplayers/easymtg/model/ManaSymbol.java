@@ -1,13 +1,18 @@
 package com.magicplayers.easymtg.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.magicplayers.easymtg.R;
 
@@ -75,20 +80,46 @@ public class ManaSymbol {
 	}
 	
 	public static Drawable getManaSymbol(Context ctx, String manaCode){
+		
+		Pattern pattern = Pattern.compile("(\\{.+?\\})");
+		Matcher matcher = pattern.matcher(manaCode);
+		String mana;
+		ArrayList<Bitmap> square = new ArrayList<Bitmap>();
+		String str = "";
+		while(matcher.find()){
+			mana = matcher.group();
+			square.add(BitmapFactory.decodeResource(ctx.getResources(), manaSymbols.get(mana)));
+			str = str + mana + ";";
+		}
+		Log.e("MANA", str+square.size());
+		if(!(square.isEmpty())){
+			Log.e("Size", ""+square.get(0).getHeight()+" "+square.get(0).getWidth());
+			Bitmap big = Bitmap.createBitmap(square.get(0).getWidth() * square.size(), square.get(0).getHeight(), Bitmap.Config.ARGB_8888);		
+			Canvas canvas = new Canvas(big);
+			canvas.drawBitmap(square.get(0), 0, 0, null);
+			for(int i = 1; i < square.size(); i++){
+				canvas.drawBitmap(square.get(i), square.get(0).getWidth()*(i), 0, null);
+			}
+			big = getResizedBitmap(big, 30, 30*square.size());
+			BitmapDrawable drawable = new BitmapDrawable(ctx.getResources(), big);
+			return drawable;
+		}
+		return null;
+	}
+	
+	public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+	    int width = bm.getWidth();
+	    int height = bm.getHeight();
+	    float scaleWidth = ((float) newWidth) / width;
+	    float scaleHeight = ((float) newHeight) / height;
+	    // CREATE A MATRIX FOR THE MANIPULATION
+	    Matrix matrix = new Matrix();
+	    // RESIZE THE BIT MAP
+	    matrix.postScale(scaleWidth, scaleHeight);
 
-		Bitmap square1 = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.mana_symbol_w);
-		Bitmap square2 = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.mana_symbol_g);
-		Bitmap square3 = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.mana_symbol_b);
-		Bitmap square4 = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.mana_symbol_u);
-
-		Bitmap big = Bitmap.createBitmap(square1.getWidth() * 4, square1.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(big);
-		canvas.drawBitmap(square1, 0, 0, null);
-		canvas.drawBitmap(square2, square1.getWidth(), 0, null);
-		canvas.drawBitmap(square3, square1.getWidth()*2, 0, null);
-		canvas.drawBitmap(square4, square1.getWidth()*3, 0, null);
-		BitmapDrawable drawable = new BitmapDrawable(ctx.getResources(), big);
-		return drawable;
+	    // "RECREATE" THE NEW BITMAP
+	    Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+	    return resizedBitmap;
 	}
 	
 }

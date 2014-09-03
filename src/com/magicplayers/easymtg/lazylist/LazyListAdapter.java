@@ -59,9 +59,10 @@ public class LazyListAdapter extends BaseAdapter implements Filterable{
         ImageView image=(ImageView)vi.findViewById(R.id.imagemview);
         title.setText(data.get(position).getTexto());
         imageLoader.DisplayImage(data.get(position).getImageUrl(), image);
-        //Drawable symbol = ManaSymbol.getManaSymbol(vi.getContext(), data.get(position).getManaCost());
+        Drawable symbol = ManaSymbol.getManaSymbol(vi.getContext(), data.get(position).getManaCost());
         ImageView manaSymbol=(ImageView)vi.findViewById(R.id.manaCost);
-        manaSymbol.setImageResource(R.drawable.mana_symbol_1000000);
+//        manaSymbol.setImageResource(R.drawable.mana_symbol_1000000);
+        manaSymbol.setImageDrawable(symbol);
         TextView type=(TextView)vi.findViewById(R.id.type);
         type.setText(data.get(position).getType());
         return vi;
