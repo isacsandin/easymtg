@@ -15,13 +15,14 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.magicplayers.easymtg.R;
-
-import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.widget.ImageView;
+
+import com.magicplayers.easymtg.R;
+import com.magicplayers.easymtg.utils.Utils;
 
 public class ImageLoader {
     
@@ -75,7 +76,7 @@ public class ImageLoader {
             conn.setInstanceFollowRedirects(true);
             InputStream is=conn.getInputStream();
             OutputStream os = new FileOutputStream(f);
-            LazyListUtils.CopyStream(is, os);
+            Utils.CopyStream(is, os);
             os.close();
             conn.disconnect();
             bitmap = decodeFile(f);

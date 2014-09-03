@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.magicplayers.easymtg.R;
 import com.magicplayers.easymtg.fullscreen.image.FullScreenViewActivity;
@@ -30,7 +29,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 
 	// List view
 	private ListView listView;
-	private LazyListAdapter lazyListAdapter;
+	private LazyListAdapter adapter;
 
 	private ArrayList<LazyListItem> itens;
 
@@ -63,7 +62,7 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 			public void onTextChanged(CharSequence cs, int arg1, int arg2,
 					int arg3) {
 				// When user changed the Text
-				lazyListAdapter.getFilter().filter(cs);
+//				adapterListView.getFilter().filter(cs);
 			}
 
 			@Override
@@ -90,22 +89,27 @@ public class SearchFragment extends Fragment implements OnItemClickListener {
 				Log.e("CREATELISTVIEW",row[0]+" "+row[1]);
 				//http://mtgimage.com/set/ARB/Sen%20Triplets.jpg
 				String url = String.format("http://mtgimage.com/set/%s/%s.jpg",row[2],row[1]);
-				itens.add(new LazyListItem(row[0],url, row[3], row[4]));
+				itens.add(new LazyListItem(row[0],url,row[3],row[4]));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		lazyListAdapter=new LazyListAdapter(this.getActivity(), itens);
-	    listView.setAdapter(lazyListAdapter);
+		adapter=new LazyListAdapter(this.getActivity(), itens);
+	    listView.setAdapter(adapter);
+		// Cria o adapter
+		//adapterListView = new AdapterListView(thiscontext, itens);
+		// Adding items to listview
+		//listView.setAdapter(adapterListView);
 		Log.e("CREATELISTVIEW","End...");
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		LazyListItem item = lazyListAdapter.getItem(arg2);
+		LazyListItem item = adapter.getItem(arg2);
 //		Toast.makeText(thiscontext, "Voc� Clicou em: " + item.getTexto(), Toast.LENGTH_LONG).show();	
         Intent i = new Intent(thiscontext, FullScreenViewActivity.class);
         i.putExtra("photoUrl", item.getImageUrl());
         thiscontext.startActivity(i);
+
 	}
 	
 }
