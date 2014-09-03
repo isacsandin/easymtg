@@ -31,7 +31,7 @@
         </activity>
         
         <activity
-            android:name="com.magicplayers.easymtg.fullscreen.image.FullScreenViewActivity"
+            android:name="com.magicplayers.easymtg.ui.FullScreenViewActivity"
             android:theme="@style/AppTheme">
         </activity>
         

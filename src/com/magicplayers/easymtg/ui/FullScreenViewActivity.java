@@ -1,4 +1,4 @@
-package com.magicplayers.easymtg.fullscreen.image;
+package com.magicplayers.easymtg.ui;
 
 import android.app.Activity;
 import android.content.Intent;

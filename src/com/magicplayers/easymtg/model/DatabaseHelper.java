@@ -117,7 +117,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			
 			String query = String.format("select Card.name, Card.imageName, Edition.code, Card.type, Card.manaCost " +
     				" from Card,Edition,CardEdition " +
-    				" where CardEdition.card_id=Card.id and CardEdition.edition_id=Edition.id");
+    				" where CardEdition.card_id=Card.id and CardEdition.edition_id=Edition.id" +
+    				" limit 100");
 			Log.e("DATABASE QUERY",query);
 		    GenericRawResults<String[]> rawResults = getCardDao().queryRaw(query);
 		    results = rawResults.getResults();

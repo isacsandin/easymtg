@@ -19,10 +19,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.magicplayers.easymtg.R;
-import com.magicplayers.easymtg.fullscreen.image.FullScreenViewActivity;
 import com.magicplayers.easymtg.lazylist.LazyListAdapter;
 import com.magicplayers.easymtg.lazylist.LazyListItem;
 import com.magicplayers.easymtg.model.DatabaseHelper;
+import com.magicplayers.easymtg.ui.FullScreenViewActivity;
 
 public class SearchFragment extends Fragment implements OnItemClickListener {
 	public static final String ARG_SECTION_NUMBER = "section_number";
