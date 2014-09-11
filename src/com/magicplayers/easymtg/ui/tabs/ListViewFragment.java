@@ -54,13 +54,13 @@ public class ListViewFragment extends Fragment implements OnItemClickListener {
 		// Criamos nossa lista que preenchera o ListView
 		itens = new ArrayList<ItemListView>();
 		ItemListView item1 = new ItemListView("Deck 1",
-				R.drawable.icon);
+				R.drawable.mana_symbol_p);
 		ItemListView item2 = new ItemListView("Deck 2",
-				R.drawable.icon);
+				R.drawable.mana_symbol_b);
 		ItemListView item3 = new ItemListView("Deck 3",
-				R.drawable.icon);
+				R.drawable.mana_symbol_g);
 		ItemListView item4 = new ItemListView("Deck 4",
-				R.drawable.icon);
+				R.drawable.mana_symbol_r);
 
 		itens.add(item1);
 		itens.add(item2);

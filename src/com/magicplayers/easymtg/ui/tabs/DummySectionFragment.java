@@ -20,7 +20,7 @@ public class DummySectionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_section_dummy,
+		View rootView = inflater.inflate(R.layout.fragment_life_counter,
 				container, false);
 		Bundle args = getArguments();
 		((TextView) rootView.findViewById(android.R.id.text1))
