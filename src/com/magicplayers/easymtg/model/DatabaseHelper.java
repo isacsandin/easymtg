@@ -10,6 +10,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -38,6 +39,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 //		} catch (java.sql.SQLException e) {
 //			e.printStackTrace();
 //		}
+		
 
 	}
 
